@@ -21,11 +21,11 @@ namespace Microsoft.AzureStack.Commands
     using Microsoft.AzureStack.Management.Models;
 
     /// <summary>
-    /// Gallery Item Cmdlet
+    /// Get Usage Connection Cmdlet
     /// </summary>
-    [Cmdlet(VerbsCommon.Get, Nouns.GalleryItem)]
-    [OutputType(typeof(GalleryItemModel))]
-    public class GetGalleryItem : AdminApiCmdlet
+    [Cmdlet(VerbsCommon.Get, Nouns.UsageConnection)]
+    [OutputType(typeof(UsageConnectionModel))]
+    public class GetUsageConnection : AdminApiCmdlet
     {
         /// <summary>
         /// Gets or sets the name.
@@ -37,7 +37,7 @@ namespace Microsoft.AzureStack.Commands
         /// <summary>
         /// Gets or sets the resource group.
         /// </summary>
-        [Parameter(ValueFromPipelineByPropertyName = true)]
+        [Parameter(ValueFromPipelineByPropertyName = true, Mandatory = true)]
         [ValidateLength(1, 90)]
         [ValidateNotNull]
         public string ResourceGroup { get; set; }
@@ -59,11 +59,8 @@ namespace Microsoft.AzureStack.Commands
             {
                 if (string.IsNullOrEmpty(this.Name))
                 {
-                    this.WriteVerbose(Resources.ListingGalleryItems);
-
-                    return string.IsNullOrEmpty(this.ResourceGroup)
-                        ? client.GalleryItem.ListWithoutResourceGroup().GalleryItems
-                        : client.GalleryItem.List(this.ResourceGroup).GalleryItems;
+                    this.WriteVerbose(Resources.ListingUsageConnections);
+                    return client.UsageConnections.List(this.ResourceGroup).UsageConnections;
                 }
                 else if (string.IsNullOrEmpty(this.ResourceGroup))
                 {
@@ -71,8 +68,8 @@ namespace Microsoft.AzureStack.Commands
                 }
                 else
                 {
-                    this.WriteVerbose(Resources.GettingGalleryItem.FormatArgs(this.Name));
-                    return client.GalleryItem.Get(this.ResourceGroup, this.Name).GalleryItem;
+                    this.WriteVerbose(Resources.GettingUsageConnection.FormatArgs(this.Name));
+                    return client.UsageConnections.Get(this.ResourceGroup, this.Name).UsageConnections;
                 }
             }
         }
